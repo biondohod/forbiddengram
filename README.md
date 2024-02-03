@@ -1,3 +1,6 @@
+## Snapgram
+# Social media app inst clone. stack: typescript + react + tailwind + appwrite + react query
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
