@@ -46,3 +46,8 @@ export type INavLink = {
     username: string;
     password: string;
   };
+
+  export type IAppwriteConfig = {
+    projectId: string;
+    url: string;
+  };
