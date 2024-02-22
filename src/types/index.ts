@@ -48,6 +48,11 @@ export type INavLink = {
   };
 
   export type IAppwriteConfig = {
-    projectId: string;
-    url: string;
+    url: string,
+    projectId: string,
+    databaseId: string,
+    storageId: string,
+    userCollectionId: string,
+    postCollectionId: string,
+    savesCollectionId: string,
   };
