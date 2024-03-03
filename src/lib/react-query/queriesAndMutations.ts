@@ -15,7 +15,7 @@ export const useCreateUserAccount = () => {
 
 export const useSignInAccount = () => {
   return useMutation({
-    mutationFn: (user: ISignInUser) => signInAccount(user)
+    mutationFn: (user: ISignInUser) => signInAccount(user),
   });
 }
 
