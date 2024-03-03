@@ -12,7 +12,7 @@ import { toast } from "./components/ui/use-toast";
 
 const App = () => {
   return (
-    <main className="flex h-screen">
+    <main className="flex min-h-screen h-auto">
     
       <Routes>
         {/* Public Routes */}

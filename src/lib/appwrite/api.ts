@@ -53,6 +53,9 @@ export async function signInAccount(user: ISignInUser) {
   try {
     return await account.createEmailSession(user.email, user.password);
   } catch (e) {
+    if (e instanceof Error) {
+      console.log(e.message)
+    }
     console.error(e);
   }
 }

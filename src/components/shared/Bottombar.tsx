@@ -18,7 +18,7 @@ const Bottombar = () => {
         const imgClassNames = `${isActive && "invert-white"}`;
 
         return (
-          <Link to={link.route} className={linkClassNames}>
+          <Link to={link.route} className={linkClassNames} key={link.label}>
             <img
               src={link.imgURL || "/assets/images/profile-placeholder.svg"}
               alt={`go to ${link.label}.`}
