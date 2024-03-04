@@ -1,13 +1,6 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Button } from "../ui/button";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "../ui/carousel";
 
 type FileUploaderProps = {
   fieldChange: (files: File[]) => void;
