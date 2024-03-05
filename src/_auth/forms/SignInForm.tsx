@@ -41,29 +41,56 @@ const SignInForm = () => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignInValidation>) {
     const { email, password } = values;
-    const session = await signInAccount({ email, password });
+    console.log('sign in')
+    try {
+      const session = await signInAccount({ email, password });
+      const isLoggedIn = await checkAuthUser();
 
-    //error is null. fix it so user can see the error message
-    if (!session) {
+      if (isLoggedIn) {
+        form.reset();
+        navigate("/");
+      } else {
+        return toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: error?.message,
+        });
+      }
+    } catch (e) {
       return toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
         description: error?.message,
       });
     }
+    // const session = await signInAccount({ email, password });
 
-    const isLoggedIn = await checkAuthUser();
+    // //error is null. fix it so user can see the error message
+    // if (!session || session instanceof Error) {
+    //   console.log(error?.message)
+    //   return toast({
+    //     variant: "destructive",
+    //     title: "Uh oh! Something went wrong.",
+    //     description: (session instanceof Error) ? session?.message : 'Sign in failed. Please try again',
+    //   });
+    // }
 
-    if (isLoggedIn) {
-      form.reset();
-      navigate("/");
-    } else {
-      return toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "Sign in failed. Please try again.",
-      });
-    }
+    // console.log(session);
+
+    // console.log(error?.message);
+
+    // const isLoggedIn = await checkAuthUser();
+
+    // if (isLoggedIn) {
+    //   form.reset();
+    //   navigate("/");
+    // } else {
+    //   return toast({
+    //     variant: "destructive",
+    //     title: "Uh oh! Something went wrong.",
+    //     description: error?.message,
+    //   });
+    // }
   }
 
   return (

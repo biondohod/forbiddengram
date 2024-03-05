@@ -10,31 +10,42 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";   
+import { Button } from "../ui/button";
 import FileUploader from "../shared/FileUploader";
 import { Input } from "../ui/input";
 import { PostValidation } from "@/lib/validation";
 import { Models } from "appwrite";
+import { useUserContext } from "@/context/AuthContext";
+import { toast } from "../ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { useCreatePost } from "@/lib/react-query/queriesAndMutations";
 
 type PostFormProps = {
   post?: Models.Document;
-}
+};
 
 const PostForm = ({ post }: PostFormProps) => {
+  const { mutateAsync: createPost, isPending: isLoadingCreate } = useCreatePost();
+  const { user } = useUserContext();
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof PostValidation>>({
     resolver: zodResolver(PostValidation),
     defaultValues: {
-      caption: post ? post?.caption: "",
+      caption: post ? post?.caption : "",
       file: [],
-      location: post ? post?.location: "",
-      tags: post ? post.tags.join(','): "",
+      location: post ? post?.location : "",
+      tags: post ? post.tags.join(",") : "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof PostValidation>) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof PostValidation>) => {
+    const newPost = await createPost({ ...values, userId: user.id });
+
+    if (!newPost) {
+      toast({title: 'Please try again!'})
+    }
+
+    navigate('/')
   };
 
   return (
@@ -67,7 +78,10 @@ const PostForm = ({ post }: PostFormProps) => {
             <FormItem>
               <FormLabel className="shad-form_label">Add photos</FormLabel>
               <FormControl>
-                <FileUploader fieldChange={field.onChange} mediaUrl={post?.imageUrl}/>
+                <FileUploader
+                  fieldChange={field.onChange}
+                  mediaUrl={post?.imageUrl}
+                />
               </FormControl>
               <FormMessage className="shad-form_message" />
             </FormItem>
