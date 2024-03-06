@@ -16,18 +16,16 @@ import { SignInValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  useCreateUserAccount,
   useSignInAccount,
 } from "@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "@/context/AuthContext";
-import { useEffect } from "react";
 
 const SignInForm = () => {
   const { toast } = useToast();
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
   const navigate = useNavigate();
 
-  const { mutateAsync: signInAccount, isPending: isSigningIn, error } =
+  const { mutateAsync: signInAccount, error } =
     useSignInAccount();
 
   const form = useForm<z.infer<typeof SignInValidation>>({
