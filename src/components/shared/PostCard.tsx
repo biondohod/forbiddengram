@@ -71,7 +71,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
         </ul>
       </div>
 
-      <Link to={`/posts${post.$id}`}>
+      <Link to={`/posts/${post.$id}`}>
         <div className="small-medium lg:base-medium py-5">
           <img
             src={post.imageUrl || "/assets/images/image-placeholder.jpg"}
