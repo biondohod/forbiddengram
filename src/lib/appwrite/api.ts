@@ -138,7 +138,7 @@ export async function uploadFile(file: File) {
   }
 }
 
-// ============================== GET FILE URL
+
 export function getFilePreview(fileId: string) {
   try {
     const fileUrl = storage.getFilePreview(
@@ -158,7 +158,7 @@ export function getFilePreview(fileId: string) {
   }
 }
 
-// ============================== DELETE FILE
+
 export async function deleteFile(fileId: string) {
   try {
     await storage.deleteFile(appwriteConfig.storageId, fileId);
