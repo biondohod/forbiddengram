@@ -7,6 +7,7 @@ export type LoaderProps = {
   loaderWidth?: number;
   loaderHeight?: number;
   fontSize?: string;
+  fontSizeMobile?: string;
 };
 /**
  * Renders a loader component with customizable message, font size, height, and width.
@@ -21,7 +22,7 @@ const Loader: FC<LoaderProps> = ({
   message = "Loading... Please wait",
   loaderHeight = 80,
   loaderWidth = 80,
-  fontSize = "text-5xl"
+  fontSize = "text-5xl",
 }) => {
   return (
     <div className={`flex items-center justify-center m-auto ${fontSize} font-semibold gap-3`}>
