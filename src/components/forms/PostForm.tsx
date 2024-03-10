@@ -143,7 +143,6 @@ const PostForm = ({ post, action }: PostFormProps) => {
                   {...field}
                 />
               </FormControl>
-              {/* <FormDescription>Separate your tags by comma ","</FormDescription> */}
               <FormMessage className="shad-form_message" />
             </FormItem>
           )}
