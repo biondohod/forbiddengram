@@ -21,6 +21,7 @@ const PostStats: FC<PostStatsProps> = ({ post, userId }) => {
   );
 
   const [likes, setLikes] = useState<string[]>(likesList);
+  const [isLiked, setIsLiked] = useState<boolean>(false)
   const [isSaved, setIsSaved] = useState<boolean>(false);
 
   const { mutate: likePost } = useLikePost();
@@ -34,7 +35,10 @@ const PostStats: FC<PostStatsProps> = ({ post, userId }) => {
   );
 
   useEffect(() => {
-    setIsSaved(!!savedPostRecord);
+    setIsLiked(checkIsLiked(likes, userId))
+  }, [])
+  useEffect(() => {
+    setIsSaved(!!savedPostRecord);    
   }, [currentUser]);
 
   const checkIsLiked = (likes: string[], userId: string) => {
@@ -50,8 +54,10 @@ const PostStats: FC<PostStatsProps> = ({ post, userId }) => {
 
     if (hasLiked) {
       newLikes = newLikes.filter((id) => id !== userId);
+      setIsLiked(false);
     } else {
       newLikes.push(userId);
+      setIsLiked(true);
     }
 
     setLikes(newLikes);
@@ -76,7 +82,7 @@ const PostStats: FC<PostStatsProps> = ({ post, userId }) => {
       <div className="flex gap-2 mr-5">
         <img
           src={`/assets/icons/${
-            checkIsLiked(likes, userId) ? "liked" : "like"
+            isLiked ? "liked" : "like"
           }.svg`}
           alt="Like"
           width={20}
