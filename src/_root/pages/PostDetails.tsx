@@ -18,7 +18,6 @@ const PostDetails = () => {
   const navigate = useNavigate();
 
   const onHandleDeletePost = () => {
-    console.log(post)
     if  (!post)  {
       toast({title:  'Something went wrong'})
     } else {
