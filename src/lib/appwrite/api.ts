@@ -186,7 +186,12 @@ export async function deletePost(postId: string, imageId: string) {
       appwriteConfig.postCollectionId,
       postId
     );
-    return {status: 'ok'}
+    // await database.deleteDocument(
+    //   appwriteConfig.databaseId,
+    //   appwriteConfig.storageId,
+    //   imageId
+    // );
+    return { status: "ok" };
   } catch (error) {
     console.log(error);
   }

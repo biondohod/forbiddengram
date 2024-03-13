@@ -26,7 +26,7 @@ const PostDetails = () => {
     }
   };
 
-  if (!post) return <div>there's no post</div>;
+  if (!post && !isPending) return <div>there's no post</div>;
   return (
     <div className="post_details-container">
       {isPending ? (
