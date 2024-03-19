@@ -10,10 +10,12 @@ import {
   deletePost,
   deleteSavedPost,
   getCurrentUser,
+  getInfinitePosts,
   getPostById,
   getRecentPosts,
   likePost,
   savePost,
+  searchPosts,
   signInAccount,
   signOutAccount,
   updatePost,
@@ -125,17 +127,17 @@ export const useDeleteSavedPost = () => {
 export const useGetCurrentUser = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_CURRENT_USER],
-    queryFn: getCurrentUser
-  })
-}
+    queryFn: getCurrentUser,
+  });
+};
 
 export const useGetPostById = (postId: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
     queryFn: () => getPostById(postId),
-    enabled: !!postId
-  })
-}
+    enabled: !!postId,
+  });
+};
 
 export const useUpdatePost = () => {
   const queryClient = useQueryClient();
@@ -143,20 +145,47 @@ export const useUpdatePost = () => {
     mutationFn: (post: IUpdatePost) => updatePost(post),
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_POST_BY_ID, data?.$id]
-      })
-    }
-  })
-}
+        queryKey: [QUERY_KEYS.GET_POST_BY_ID, data?.$id],
+      });
+    },
+  });
+};
 
 export const useDeletePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({postId, imageId} : {postId: string, imageId: string}) => deletePost(postId, imageId),
+    mutationFn: ({ postId, imageId }: { postId: string; imageId: string }) =>
+      deletePost(postId, imageId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_RECENT_POSTS]
-      })
-    }
-  })
-}
+        queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
+      });
+    },
+  });
+};
+
+export const useGetPosts = () => {
+  return useInfiniteQuery({
+    queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
+    queryFn: getInfinitePosts as any, // Add type assertion here
+    getNextPageParam: (lastPage: any) => { // Change type of lastPage to any
+      if (!lastPage || !lastPage.documents) {
+        return undefined;
+      }
+      if (lastPage && lastPage.documents.length === 0) return null;
+
+      const lastId = lastPage?.documents[lastPage?.documents.length - 1].$idж;
+
+      return lastId;
+    },
+    initialPageParam: null, // Add the missing initialPageParam property
+  });
+};
+
+export const useSearchPost = (searchTerm: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.SEARCH_POSTS],
+    queryFn: () => searchPosts({ searchTerm }),
+    enabled: !!searchTerm,
+  });
+};
