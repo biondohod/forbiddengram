@@ -315,7 +315,7 @@ export async function getPostById(postId: string) {
 }
 
 export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
-  const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(10)];
+  const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(3)];
 
   if (pageParam) {
     queries.push(Query.cursorAfter(pageParam.toString()));
@@ -327,7 +327,9 @@ export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
       appwriteConfig.postCollectionId,
       queries
     );
+
     if (!posts) throw Error;
+
     return posts;
   } catch (error) {
     console.log(error);
