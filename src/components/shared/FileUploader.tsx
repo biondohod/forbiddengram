@@ -19,44 +19,59 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
     },
     [file]
   );
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { "image/*": [".png", ".jpeg", ".jpg", ".svg"] },
   });
+
+  const renderDropZone = () => {
+    if (isDragActive) {
+      return (
+        <div className="file_uploader-box">
+          <h3 className="base-medium text-light-2 mb-2 mt-6">
+            Release your mouse button to upload the files!
+          </h3>
+        </div>
+      );
+    }
+    if (fileUrl) {
+      return (
+        <>
+          <div className="flex flex-1 justify-center p-5 lg:p-10">
+            <img
+              src={fileUrl}
+              alt="uploaded image preview."
+              className="file_uploader-img w-full h-auto"
+            />
+          </div>
+          <p className="file_uploader-label">Click or drag photo to replace</p>
+        </>
+      );
+    }
+    return (
+      <div className="file_uploader-box">
+        <img
+          src="/assets/icons/file-upload.svg"
+          alt="upload your images here."
+          width={96}
+          height={77}
+        />
+        <h3 className="base-medium text-light-2 mb-2 mt-6">Drag photo here</h3>
+        <p className="text-light-4 small-regular mb-6">SVG, PNG, JPG</p>
+        <Button type="button" className="shad-button_dark_4">
+          Select from computer
+        </Button>
+      </div>
+    );
+  };
 
   return (
     <div
       {...getRootProps()}
       className="flex flex-center flex-col bg-dark-3 rounded-xl cursor-pointer"
     >
-      <input {...getInputProps()} className="cursor-pointer" multiple={false}/>
-      {fileUrl ? (
-        <>
-          <div className="flex flex-1 justify-center p-5 lg:p-10">
-            <img
-              src={fileUrl}
-              alt="uploaded image preview."
-              // посмотреть как выглядят изображения при загрузке мб стоит убрать класс file_uploader
-              className="file_uploader-img w-full h-auto"
-            />
-          </div>
-          <p className="file_uploader-label">Click or drag photo to replace</p>
-        </>
-      ) : (
-        <div className="file_uploader-box">
-          <img
-            src="/assets/icons/file-upload.svg"
-            alt="upload your images here."
-            width={96}
-            height={77}
-          />
-          <h3 className="base-medium text-light-2 mb-2 mt-6">
-            Drag photo here
-          </h3>
-          <p className="text-light-4 small-regular mb-6">SVG, PNG, JPG</p>
-          <Button type="button" className="shad-button_dark_4">Select from computer</Button>
-        </div>
-      )}
+      <input {...getInputProps()} className="cursor-pointer" multiple={false} />
+      {renderDropZone()}
     </div>
   );
 };
