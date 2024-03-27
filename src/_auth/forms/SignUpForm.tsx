@@ -15,11 +15,8 @@ import { Button } from "@/components/ui/button";
 import { SignUpValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  useCreateUserAccount,
-  useSignInAccount,
-} from "@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "@/context/AuthContext";
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/mutations";
 
 const SignUpForm = () => {
   const { toast } = useToast();
@@ -45,37 +42,37 @@ const SignUpForm = () => {
   async function onSubmit(values: z.infer<typeof SignUpValidation>) {
     const newUser = await createUserAccount(values);
 
-    if (!newUser) {
-      return toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with signing up. Please try again",
-      });
-    }
+    // if (!newUser) {
+    //   return toast({
+    //     variant: "destructive",
+    //     title: "Uh oh! Something went wrong.",
+    //     description: "There was a problem with signing up. Please try again",
+    //   });
+    // }
 
-    const { email, password } = values;
-    const session = await signInAccount({ email, password });
+    // const { email, password } = values;
+    // const session = await signInAccount({ email, password });
 
-    if (!session) {
-      return toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "Sign in failed. Please try again.",
-      });
-    }
+    // if (!session) {
+    //   return toast({
+    //     variant: "destructive",
+    //     title: "Uh oh! Something went wrong.",
+    //     description: "Sign in failed. Please try again.",
+    //   });
+    // }
 
-    const isLoggedIn = await checkAuthUser();
+    // const isLoggedIn = await checkAuthUser();
 
-    if (isLoggedIn) {
-      form.reset();
-      navigate("/");
-    } else {
-      return toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "Sign in failed. Please try again.",
-      });
-    }
+    // if (isLoggedIn) {
+    //   form.reset();
+    //   navigate("/");
+    // } else {
+    //   return toast({
+    //     variant: "destructive",
+    //     title: "Uh oh! Something went wrong.",
+    //     description: "Sign in failed. Please try again.",
+    //   });
+    // }
   }
 
   return (

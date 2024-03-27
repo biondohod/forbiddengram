@@ -2,7 +2,8 @@ import PostForm from "@/components/forms/PostForm";
 import Loader from "@/components/shared/Loader";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { useDeletePost, useGetPostById } from "@/lib/react-query/queriesAndMutations";
+import { useDeletePost } from "@/lib/react-query/mutations";
+import { useGetPostById } from "@/lib/react-query/queries";
 import { useNavigate, useParams } from "react-router-dom";
 
 const EditPost = () => {

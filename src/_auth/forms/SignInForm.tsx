@@ -15,10 +15,8 @@ import { Button } from "@/components/ui/button";
 import { SignInValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  useSignInAccount,
-} from "@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "@/context/AuthContext";
+import { useSignInAccount } from "@/lib/react-query/mutations";
 
 const SignInForm = () => {
   const { toast } = useToast();

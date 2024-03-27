@@ -1,14 +1,10 @@
 import { useUserContext } from "@/context/AuthContext";
-import {
-  useDeleteSavedPost,
-  useGetCurrentUser,
-  useLikePost,
-  useSavePost,
-} from "@/lib/react-query/queriesAndMutations";
 import { Models } from "appwrite";
 import { FC, useEffect, useState } from "react";
 import { record } from "zod";
 import Loader from "./Loader";
+import { useDeleteSavedPost, useLikePost, useSavePost } from "@/lib/react-query/mutations";
+import { useGetCurrentUser } from "@/lib/react-query/queries";
 
 type PostStatsProps = {
   post: Models.Document;

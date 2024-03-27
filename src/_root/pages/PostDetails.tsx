@@ -2,11 +2,8 @@ import Loader from "@/components/shared/Loader";
 import PostStats from "@/components/shared/PostStats";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import {
-  useDeletePost,
-  useGetCurrentUser,
-  useGetPostById,
-} from "@/lib/react-query/queriesAndMutations";
+import { useDeletePost } from "@/lib/react-query/mutations";
+import { useGetCurrentUser, useGetPostById } from "@/lib/react-query/queries";
 import { formatDateString } from "@/lib/utils";
 import { Link, useNavigate, useParams } from "react-router-dom";
 

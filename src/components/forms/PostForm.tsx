@@ -18,11 +18,7 @@ import { Models } from "appwrite";
 import { useUserContext } from "@/context/AuthContext";
 import { toast } from "../ui/use-toast";
 import { useNavigate } from "react-router-dom";
-import {
-  useCreatePost,
-  useDeletePost,
-  useUpdatePost,
-} from "@/lib/react-query/queriesAndMutations";
+import { useCreatePost, useDeletePost, useUpdatePost } from "@/lib/react-query/mutations";
 
 type PostFormProps = {
   post?: Models.Document;
