@@ -16,16 +16,21 @@ import { SignUpValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserContext } from "@/context/AuthContext";
-import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/mutations";
+import {
+  useCreateUserAccount,
+  useSaveUserToDb,
+  useSignInAccount,
+} from "@/lib/react-query/mutations";
 
 const SignUpForm = () => {
   const { toast } = useToast();
   const { checkAuthUser } = useUserContext();
   const navigate = useNavigate();
 
-  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } =
+  const { mutateAsync: createUserAccount, isPending: isCreatingAccount} =
     useCreateUserAccount();
-  const { mutateAsync: signInAccount } =
+  const { isPending: isSavingToDb } = useSaveUserToDb();
+  const { mutateAsync: signInAccount, isPending: isSigningIn } =
     useSignInAccount();
 
   const form = useForm<z.infer<typeof SignUpValidation>>({
@@ -142,10 +147,14 @@ const SignUpForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="shad-button_primary">
-            {isCreatingAccount ? (
+          <Button
+            type="submit"
+            className="shad-button_primary"
+            disabled={isCreatingAccount || isSigningIn || isSavingToDb}
+          >
+            {isCreatingAccount || isSigningIn || isSavingToDb ? (
               <div className="flex items-center justify-center">
-                <Loader /> Loading...
+                <Loader loaderWidth={24} loaderHeight={24} fontSize="text-xl" />
               </div>
             ) : (
               "Sign Up"

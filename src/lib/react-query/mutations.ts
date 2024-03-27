@@ -1,4 +1,11 @@
-import { INewPost, INewUser, ISignInUser, IUpdatePost } from "@/types";
+import {
+  INewPost,
+  INewUser,
+  ISaveUserToDb,
+  ISignInUser,
+  IUpdatePost,
+  IUser,
+} from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   createPost,
@@ -15,31 +22,72 @@ import {
 import { QUERY_KEYS } from "./queryKeys";
 import { avatars } from "../appwrite/config";
 import { toast } from "@/components/ui/use-toast";
+import { useUserContext } from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const useCreateUserAccount = () => {
+  const saveUserToDbMutation = useSaveUserToDb();
+
   return useMutation({
     mutationFn: (user: INewUser) => createUserAccount(user),
     onSuccess: async (newAccount, user) => {
       const avatarUrl = avatars.getInitials(user.name);
 
-      const newUser = await saveUserToDB({
+      // password needs to be provided for further automatic authorization
+      saveUserToDbMutation.mutate({
         accountId: newAccount.$id,
         email: newAccount.email,
         name: newAccount.name,
         imageUrl: avatarUrl,
         username: user.username,
+        password: user.password,
       });
-      return newUser;
     },
     onError: (error) => {
-      toast({title: `Oops! There's an error: ${error.message}`})
-    }
+      toast({ title: `Oops! There's an error: ${error.message}` });
+    },
+  });
+};
+
+export const useSaveUserToDb = () => {
+  const signInAccountMutation = useSignInAccount();
+
+  return useMutation({
+    mutationFn: (user: ISaveUserToDb) => saveUserToDB({
+      accountId: user.accountId,
+      email: user.email,
+      name: user.name,
+      username: user.username,
+      imageUrl: user.imageUrl
+    }),
+    onSuccess: (_, user) => {
+      signInAccountMutation.mutate({
+        email: user.email,
+        password: user.password,
+      });
+    },
+    onError: (error) => {
+      toast({ title: `Oops! There's an error: ${error.message}` });
+    },
   });
 };
 
 export const useSignInAccount = () => {
+  const { checkAuthUser } = useUserContext();
+  const navigate = useNavigate();
+
   return useMutation({
     mutationFn: (user: ISignInUser) => signInAccount(user),
+    onSuccess: async () => {
+      const isLoggedIn = await checkAuthUser();
+
+      if (isLoggedIn) {
+        navigate("/");
+      }
+    },
+    onError: (error) => {
+      toast({ title: `Oops! There's an error: ${error.message}` });
+    },
   });
 };
 

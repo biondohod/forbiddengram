@@ -20,11 +20,10 @@ import { useSignInAccount } from "@/lib/react-query/mutations";
 
 const SignInForm = () => {
   const { toast } = useToast();
-  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
+  const { checkAuthUser } = useUserContext();
   const navigate = useNavigate();
 
-  const { mutateAsync: signInAccount, error } =
-    useSignInAccount();
+  const { mutateAsync: signInAccount, error, isPending: isSigningIn } = useSignInAccount();
 
   const form = useForm<z.infer<typeof SignInValidation>>({
     resolver: zodResolver(SignInValidation),
@@ -37,55 +36,12 @@ const SignInForm = () => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignInValidation>) {
     const { email, password } = values;
-    console.log('sign in')
-    try {
-      const session = await signInAccount({ email, password });
-      const isLoggedIn = await checkAuthUser();
-
-      if (isLoggedIn) {
-        form.reset();
-        navigate("/");
-      } else {
-        return toast({
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: error?.message,
-        });
-      }
-    } catch (e) {
-      return toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: error?.message,
-      });
-    }
-    // const session = await signInAccount({ email, password });
-
-    // //error is null. fix it so user can see the error message
-    // if (!session || session instanceof Error) {
-    //   console.log(error?.message)
-    //   return toast({
-    //     variant: "destructive",
-    //     title: "Uh oh! Something went wrong.",
-    //     description: (session instanceof Error) ? session?.message : 'Sign in failed. Please try again',
-    //   });
-    // }
-
-    // console.log(session);
-
-    // console.log(error?.message);
-
+    await signInAccount({ email, password });
     // const isLoggedIn = await checkAuthUser();
 
     // if (isLoggedIn) {
     //   form.reset();
     //   navigate("/");
-    // } else {
-    //   return toast({
-    //     variant: "destructive",
-    //     title: "Uh oh! Something went wrong.",
-    //     description: error?.message,
-    //   });
     // }
   }
 
@@ -130,10 +86,10 @@ const SignInForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="shad-button_primary">
-            {isUserLoading ? (
+          <Button type="submit" className="shad-button_primary" disabled={isSigningIn}>
+            {isSigningIn ? (
               <div className="flex items-center justify-center">
-                <Loader /> Loading...
+                <Loader loaderWidth={24} loaderHeight={24} fontSize="text-xl"/>
               </div>
             ) : (
               "Sign In"

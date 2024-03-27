@@ -56,6 +56,15 @@ export type INewUser = {
   password: string;
 };
 
+export type ISaveUserToDb = {
+  accountId: string;
+  email: string;
+  name: string;
+  imageUrl: URL;
+  username: string;
+  password: string;
+};
+
 export type ISignInUser = {
   email: string;
   password: string;

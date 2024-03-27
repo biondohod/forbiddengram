@@ -18,18 +18,12 @@ export async function saveUserToDB(user: {
   imageUrl: URL;
   username?: string;
 }) {
-  try {
-    const newUser = await database.createDocument(
+    return await database.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
       ID.unique(),
       user
     );
-
-    return newUser;
-  } catch (error) {
-    console.log(error);
-  }
 }
 
 export async function signInAccount(user: ISignInUser) {
