@@ -53,13 +53,14 @@ export const useSaveUserToDb = () => {
   const signInAccountMutation = useSignInAccount();
 
   return useMutation({
-    mutationFn: (user: ISaveUserToDb) => saveUserToDB({
-      accountId: user.accountId,
-      email: user.email,
-      name: user.name,
-      username: user.username,
-      imageUrl: user.imageUrl
-    }),
+    mutationFn: (user: ISaveUserToDb) =>
+      saveUserToDB({
+        accountId: user.accountId,
+        email: user.email,
+        name: user.name,
+        username: user.username,
+        imageUrl: user.imageUrl,
+      }),
     onSuccess: (_, user) => {
       signInAccountMutation.mutate({
         email: user.email,
@@ -94,6 +95,9 @@ export const useSignInAccount = () => {
 export const useSignOutAccount = () => {
   return useMutation({
     mutationFn: signOutAccount,
+    onError: (error) => {
+      toast({ title: `Oops! There's an error: ${error.message}` });
+    },
   });
 };
 
@@ -194,6 +198,9 @@ export const useDeletePost = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
       });
+    },
+    onError: (error) => {
+      toast({ title: `Oops! There's an error: ${error.message}` });
     },
   });
 };

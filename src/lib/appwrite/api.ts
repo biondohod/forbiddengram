@@ -3,12 +3,12 @@ import { INewPost, INewUser, ISignInUser, IUpdatePost } from "@/types";
 import { account, appwriteConfig, avatars, database, storage } from "./config";
 
 export async function createUserAccount(user: INewUser) {
-    return (await account.create(
-      ID.unique(),
-      user.email,
-      user.password,
-      user.name
-    ));
+  return await account.create(
+    ID.unique(),
+    user.email,
+    user.password,
+    user.name
+  );
 }
 
 export async function saveUserToDB(user: {
@@ -18,12 +18,12 @@ export async function saveUserToDB(user: {
   imageUrl: URL;
   username?: string;
 }) {
-    return await database.createDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.userCollectionId,
-      ID.unique(),
-      user
-    );
+  return await database.createDocument(
+    appwriteConfig.databaseId,
+    appwriteConfig.userCollectionId,
+    ID.unique(),
+    user
+  );
 }
 
 export async function signInAccount(user: ISignInUser) {
@@ -51,11 +51,7 @@ export async function getCurrentUser() {
 }
 
 export async function signOutAccount() {
-  try {
-    return await account.deleteSession("current");
-  } catch (e) {
-    console.error(e);
-  }
+  return await account.deleteSession("current");
 }
 
 export async function createPost(post: INewPost) {
@@ -156,22 +152,16 @@ export async function updatePost(post: IUpdatePost) {
 
 export async function deletePost(postId: string, imageId: string) {
   if (!postId || !imageId) throw Error;
-
-  try {
-    await database.deleteDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.postCollectionId,
-      postId
-    );
-    // await database.deleteDocument(
-    //   appwriteConfig.databaseId,
-    //   appwriteConfig.storageId,
-    //   imageId
-    // );
-    return { status: "ok" };
-  } catch (error) {
-    console.log(error);
-  }
+  return await database.deleteDocument(
+    appwriteConfig.databaseId,
+    appwriteConfig.postCollectionId,
+    postId
+  );
+  // await database.deleteDocument(
+  //   appwriteConfig.databaseId,
+  //   appwriteConfig.storageId,
+  //   imageId
+  // );
 }
 
 export async function uploadFile(file: File) {
@@ -318,7 +308,7 @@ export async function searchPosts({ searchTerm }: { searchTerm: string }) {
     const posts = await database.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      [Query.search('caption', searchTerm)]
+      [Query.search("caption", searchTerm)]
     );
     if (!posts) throw Error;
     return posts;
