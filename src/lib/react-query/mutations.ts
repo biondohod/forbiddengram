@@ -109,6 +109,10 @@ export const useCreatePost = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
       });
+      toast({title: 'Successfully created!'})
+    },
+    onError: (error) => {
+      toast({ title: `Oops! There's an error: ${error.message}` });
     },
   });
 };
@@ -198,6 +202,7 @@ export const useDeletePost = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
       });
+      toast({title: 'Successfully deleted!'})
     },
     onError: (error) => {
       toast({ title: `Oops! There's an error: ${error.message}` });
