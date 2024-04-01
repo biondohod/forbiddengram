@@ -89,7 +89,6 @@ export async function createPost(post: INewPost) {
 export async function updatePost(post: IUpdatePost) {
   const hasFileToUpdate = post.file.length > 0;
 
-  try {
     let image = {
       imageUrl: post.imageUrl,
       imageId: post.imageId,
@@ -134,9 +133,6 @@ export async function updatePost(post: IUpdatePost) {
     }
 
     return updatedPost;
-  } catch (error) {
-    console.log(error);
-  }
 }
 
 export async function deletePost(postId: string, imageId: string) {
