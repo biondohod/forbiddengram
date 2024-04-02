@@ -206,7 +206,6 @@ export async function getRecentPosts() {
 }
 
 export async function likePost(postId: string, likesArray: string[]) {
-  try {
     const updatedPost = await database.updateDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
@@ -217,13 +216,9 @@ export async function likePost(postId: string, likesArray: string[]) {
     );
     if (!updatedPost) throw Error;
     return updatedPost;
-  } catch (error) {
-    console.error(error);
-  }
 }
 
 export async function savePost(postId: string, userId: string) {
-  try {
     const updatedPost = await database.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.savesCollectionId,
@@ -235,9 +230,6 @@ export async function savePost(postId: string, userId: string) {
     );
     if (!updatedPost) throw Error;
     return updatedPost;
-  } catch (error) {
-    console.error(error);
-  }
 }
 
 export async function deleteSavedPost(savedRecordId: string) {

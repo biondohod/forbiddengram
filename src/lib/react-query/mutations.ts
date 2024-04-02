@@ -141,6 +141,9 @@ export const useLikePost = () => {
         queryKey: [QUERY_KEYS.GET_CURRENT_USER],
       });
     },
+    onError: (error) => {
+      toast({ title: `Oops! There's an error: ${error.message}` });
+    },
   });
 };
 
@@ -159,6 +162,9 @@ export const useSavePost = () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_CURRENT_USER],
       });
+    },
+    onError: (error) => {
+      toast({ title: `Oops! There's an error: ${error.message}` });
     },
   });
 };
