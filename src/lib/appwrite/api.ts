@@ -233,7 +233,6 @@ export async function savePost(postId: string, userId: string) {
 }
 
 export async function deleteSavedPost(savedRecordId: string) {
-  try {
     const statusCode = await database.deleteDocument(
       appwriteConfig.databaseId,
       appwriteConfig.savesCollectionId,
@@ -241,9 +240,6 @@ export async function deleteSavedPost(savedRecordId: string) {
     );
     if (!statusCode) throw Error;
     return { status: "ok" };
-  } catch (error) {
-    console.error(error);
-  }
 }
 
 export async function getPostById(postId: string) {
